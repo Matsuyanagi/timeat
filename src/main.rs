@@ -15,15 +15,22 @@ struct Cli {
 fn main() {
     let cli = Cli::parse();
 
-    for ut in cli.unixtime {
-        let utc: DateTime<Utc> = DateTime::from_timestamp(ut, 0).unwrap();
-        if cli.utc {
-            println!("unixtime: {} , utc: {}", ut, utc);
-        } else {
-            let local: DateTime<Local> = utc.with_timezone(&Local);
-            println!("unixtime: {} , local: {}", ut, local);
+    if cli.unixtime.len() > 0 {
+        for ut in cli.unixtime {
+            let utc: DateTime<Utc> = DateTime::from_timestamp(ut, 0).unwrap();
+            if cli.utc {
+                println!("unixtime: {} , utc: {}", ut, utc);
+            } else {
+                let local: DateTime<Local> = utc.with_timezone(&Local);
+                println!("unixtime: {} , local: {}", ut, local);
+            }
         }
+    }else{
+        let dt: DateTime<Local> = Local::now();
+        let timestamp: i64 = dt.timestamp();
+        println!("{}", timestamp);
     }
+    
 
     ()
 }
